@@ -1,8 +1,11 @@
 "use strict";
 const {
-    SlashCommandBuilder
+    SlashCommandBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    ActionRowBuilder
 } = require("discord.js");
-const { client } = require("../controllers");
+const { client } = require("../client");
 
 const buttonsType = "buttons";
 const dropdownType = "dropdown"
@@ -46,17 +49,24 @@ module.exports = {
         if (!roles.length || roles.length > 25)
             return await negativeRepl();
 
-        console.log(client.guilds);
+
+        const guild = client.guilds.cache.get(interaction.guildId);
 
         switch (type) {
             case buttonsType:
                 const buttons = roles.map(role => new ButtonBuilder()
-                    .setCustomId(role.toLower())
-                    .setLabel(role))
+                    .setCustomId(`role-picker-button:${guild.roles.cache.get(role).name.toLowerCase()}`)
+                    .setLabel(guild.roles.cache.get(role).name)
+                    .setStyle(ButtonStyle.Primary));
 
+                const row = new ActionRowBuilder()
+                    .addComponents(...buttons);
 
+                await client.channels.cache
+                    .get(interaction.channelId)
+                    .send({ components: [row] });
 
-                break;
+                return interaction.reply({ content: "Role picker created successfully.", ephemeral: true });
             case dropdownType:
                 break;
         }
@@ -66,5 +76,5 @@ module.exports = {
             ephemeral: true
         });
     },
-
+    rolePickerButtonID: "role-picker-button"
 };

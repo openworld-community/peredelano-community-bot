@@ -6,6 +6,7 @@ const {
     Collection
 } = require("discord.js");
 const { client } = require("./client");
+const { router } = require("./controllers");
 
 function initListeners() {
     client.once(Events.ClientReady, c => console.info(`[INFO] CLIENT STARTED AS ${c.user.tag}`));
@@ -45,11 +46,12 @@ function initListeners() {
     });
 
     client.on(Events.InteractionCreate, async interaction => {
-        if (!interaction.isModalSubmit()) return;
+        if (interaction.isChatInputCommand()) return;
 
         const parseRoute = (id) => id.split(":")[0];
 
         try {
+            console.log("ROUTER", router)
             const route = parseRoute(interaction.customId);
             const controller = router.get(route);
             if (controller)

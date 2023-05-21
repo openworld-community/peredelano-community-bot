@@ -2,10 +2,18 @@
 const { client } = require("./client");
 const { messageTextInputID, sendMessageModalID } = require("./commands/send-message");
 const { sendEmbedModalID, embedJSONInputID } = require("./commands/send-embed");
+const { rolePickerButtonID } = require("./commands/create-role-picker");
 
 const router = new Map();
 router.set(sendMessageModalID, sendMessage);
 router.set(sendEmbedModalID, sendEmbed);
+router.set(rolePickerButtonID, rolePick);
+
+async function rolePick(interaction) {
+    const role = interaction.customId.split(":")[1];
+
+    
+}
 
 async function sendEmbed(interaction) {
     try {
@@ -61,5 +69,7 @@ async function sendMessage(interaction) {
 
 module.exports = {
     client: client,
+    router: router,
     sendMessage: sendMessage,
+    sendEmbed: sendEmbed,
 };
