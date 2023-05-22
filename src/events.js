@@ -6,7 +6,7 @@ const {
     Collection
 } = require("discord.js");
 const { client } = require("./client");
-const { router } = require("./controllers");
+const { router } = require("./interactions/router");
 
 function initListeners() {
     client.once(Events.ClientReady, c => console.info(`[INFO] CLIENT STARTED AS ${c.user.tag}`));
