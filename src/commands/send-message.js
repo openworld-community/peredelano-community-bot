@@ -5,12 +5,14 @@ const {
     TextInputBuilder,
     TextInputStyle,
     ActionRowBuilder,
+    PermissionFlagsBits
 } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("send-message")
         .setDescription("Send a message to the specified channel")
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .addChannelOption(option => {
             return option
                 .setName("channel")

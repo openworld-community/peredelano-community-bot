@@ -5,7 +5,8 @@ const {
     ButtonStyle,
     ActionRowBuilder,
     StringSelectMenuBuilder,
-    StringSelectMenuOptionBuilder
+    StringSelectMenuOptionBuilder,
+    PermissionFlagsBits
 } = require("discord.js");
 const { client } = require("../client");
 
@@ -16,6 +17,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("create-role-picker")
         .setDescription("Creates a role picker to select the specified roles (max 25)")
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addStringOption(option =>
             option.setName("type")
                 .setDescription("Role picker type")

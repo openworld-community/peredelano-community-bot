@@ -5,6 +5,7 @@ const {
     TextInputBuilder,
     TextInputStyle,
     ActionRowBuilder,
+    PermissionFlagsBits
 } = require("discord.js");
 
 
@@ -12,6 +13,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("send-embed")
         .setDescription("Send a embed message to the specified channel")
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .addChannelOption(option => {
             return option
                 .setName("channel")
