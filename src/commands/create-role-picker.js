@@ -3,7 +3,9 @@ const {
     SlashCommandBuilder,
     ButtonBuilder,
     ButtonStyle,
-    ActionRowBuilder
+    ActionRowBuilder,
+    StringSelectMenuBuilder,
+    StringSelectMenuOptionBuilder
 } = require("discord.js");
 const { client } = require("../client");
 
@@ -26,7 +28,13 @@ module.exports = {
             option
                 .setName("roles")
                 .setDescription("List of roles separated by spaces (use @mention)")
-                .setRequired(true),),
+                .setRequired(true))
+        .addNumberOption(option =>
+            option
+                .setName("limit")
+                .setDescription("Number of roles that can be selected (only for the dropdown list)")
+                .setRequired(false)
+                .setMinValue(0)),
 
     async execute(interaction) {
         const type = interaction.options.getString("type");
@@ -37,44 +45,49 @@ module.exports = {
         });
 
         const input = interaction.options.getString("roles");
-        if (!input)
-            return await negativeRepl();
+        if (!input) return negativeRepl();
+
+
+        const guild = client.guilds.cache.get(interaction.guildId);
 
         const roles = input
             .split(" ")
             .map(item => {
                 const m = item.match(/[0-9]+/);
                 return m ? m[0] : "";
-            }).filter(item => item.length);
-        if (!roles.length || roles.length > 25)
-            return await negativeRepl();
+            }).filter(item => guild.roles.cache.has(item));
 
-
-        const guild = client.guilds.cache.get(interaction.guildId);
+        if (!roles.length || roles.length > 25) return negativeRepl();
 
         switch (type) {
             case buttonsType:
-                const buttons = roles.map(role => new ButtonBuilder()
-                    .setCustomId(`role-picker-button:${guild.roles.cache.get(role).name.toLowerCase()}`)
-                    .setLabel(guild.roles.cache.get(role).name)
+                const buttons = roles.map(roleID => new ButtonBuilder()
+                    .setCustomId(`role-picker-button:${roleID}`)
+                    .setLabel(guild.roles.cache.get(roleID).name)
                     .setStyle(ButtonStyle.Primary));
-
-                const row = new ActionRowBuilder()
+                const row1 = new ActionRowBuilder()
                     .addComponents(...buttons);
-
-                await client.channels.cache
-                    .get(interaction.channelId)
-                    .send({ components: [row] });
-
-                return interaction.reply({ content: "Role picker created successfully.", ephemeral: true });
+                await client.channels.cache.get(interaction.channelId).send({ components: [row1] });
+                break;
             case dropdownType:
+                const limit = interaction.options.getNumber("limit");
+                const options = roles.map(roleID => new StringSelectMenuOptionBuilder()
+                    .setLabel(guild.roles.cache.get(roleID).name)
+                    .setValue(roleID))
+                const select = new StringSelectMenuBuilder()
+                    .setCustomId(this.rolePickerDropdownID)
+                    .addOptions(...options);
+
+                if (limit > 0) select.setMaxValues(limit);
+                else select.setMaxValues(1);
+
+                const row2 = new ActionRowBuilder()
+                    .addComponents(select);
+                await client.channels.cache.get(interaction.channelId).send({ components: [row2] });
                 break;
         }
-
-        await interaction.reply({
-            content: "krasava",
-            ephemeral: true
-        });
+        await interaction.reply({ content: "Role picker created successfully.", ephemeral: true });
     },
-    rolePickerButtonID: "role-picker-button"
+    rolePickerButtonID: "role-picker-button",
+    rolePickerDropdownID: "role-picker-dropdown"
 };
