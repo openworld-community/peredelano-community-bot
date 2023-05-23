@@ -1,6 +1,7 @@
 "use strict";
 const { Events } = require('discord.js');
 const { router } = require("../interactions/router");
+const { client } = require("../client");
 
 module.exports = {
     name: Events.InteractionCreate,
