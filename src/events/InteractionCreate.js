@@ -16,7 +16,7 @@ module.exports = {
 };
 
 async function handleChatInputCommand(interaction) {
-    console.log(interaction.commandName);
+    console.log(`[CommandHandler] ${interaction.commandName}`);
 
     const command = client.commands.get(interaction.commandName);
 

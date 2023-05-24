@@ -34,11 +34,11 @@ const main = async () => {
     for (const file of eventFiles) {
         const filePath = path.join(eventsPath, file);
         const event = require(filePath);
-        console.log(event.name);
+        console.log(`[EventHandler] ${event.name}`);
         if (event.once) {
-            client.once(event.name, (...args) => event.execute(...args).then(console.error));
+            client.once(event.name, (...args) => event.execute(...args).catch(console.error));
         } else {
-            client.on(event.name, (...args) => event.execute(...args).then(console.error));
+            client.on(event.name, (...args) => event.execute(...args).catch(console.error));
         }
     }
 
