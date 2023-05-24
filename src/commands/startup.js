@@ -100,6 +100,12 @@ module.exports = {
                     type: ChannelType.GuildText,
                     parent: category
                 });
+                
+                await interaction.guild.channels.create({
+                    name: "командный-форум",
+                    type: ChannelType.GuildForum,
+                    parent: category
+                });
 
                 await interaction.guild.channels.create({
                     name: "Командный канал",
