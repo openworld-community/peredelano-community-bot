@@ -58,7 +58,6 @@ module.exports = {
 
         switch (command) {
             case "create": {
-                console.log("create command");
                 const category = await interaction.guild.channels.create({
                     name: interaction.options.get("name").value,
                     type: ChannelType.GuildCategory,
