@@ -3,6 +3,6 @@ const { Events } = require('discord.js');
 
 module.exports = {
     name: Events.GuildBanAdd,
-    execute(ban) {
+    async execute(ban) {
     },
 };

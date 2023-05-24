@@ -5,9 +5,13 @@ const {
     Collection
 } = require("discord.js");
 const { client } = require("./client");
+const db = require("./database/model");
 
-const main = () => {
+const main = async () => {
     require("dotenv").config();
+
+    await db.sequelize.authenticate();
+    await db.sequelize.sync();
 
     const commandPath = path.join(__dirname, "commands");
     const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith(".js"));
@@ -32,9 +36,9 @@ const main = () => {
         const event = require(filePath);
         console.log(event.name);
         if (event.once) {
-            client.once(event.name, (...args) => event.execute(...args));
+            client.once(event.name, (...args) => event.execute(...args).then(console.error));
         } else {
-            client.on(event.name, (...args) => event.execute(...args));
+            client.on(event.name, (...args) => event.execute(...args).then(console.error));
         }
     }
 

@@ -3,6 +3,6 @@ const { Events } = require('discord.js');
 
 module.exports = {
     name: Events.ThreadDelete,
-    execute(thread) {
+    async execute(thread) {
     },
 };

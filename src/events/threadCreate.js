@@ -3,6 +3,6 @@ const { Events } = require('discord.js');
 
 module.exports = {
     name: Events.ThreadCreate,
-    execute(thread, newlyCreated) {
+    async execute(thread, newlyCreated) {
     },
 };

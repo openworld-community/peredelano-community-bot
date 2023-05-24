@@ -5,7 +5,8 @@ const {
     TextInputBuilder,
     TextInputStyle,
     ActionRowBuilder,
-    PermissionFlagsBits
+    PermissionFlagsBits,
+    ChannelType
 } = require("discord.js");
 
 module.exports = {
@@ -17,7 +18,8 @@ module.exports = {
             return option
                 .setName("channel")
                 .setDescription("Text channel")
-                .setRequired(true);
+                .setRequired(true)
+                .addChannelTypes(ChannelType.GuildText);
         }),
 
     async execute(interaction) {
