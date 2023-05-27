@@ -33,7 +33,9 @@ module.exports = {
 
         console.log(response.choices[0].message.content);
 
-        await interaction.followUp(response.choices[0].message.content);
+        const answer = response.choices[0].message.content.length >= 2000 ? response.choices[0].message.content.slice(0, 2000) : response.choices[0].message.content;
+
+        await interaction.followUp(answer);
     }
 };
 
