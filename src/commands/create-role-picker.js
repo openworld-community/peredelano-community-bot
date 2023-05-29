@@ -38,6 +38,9 @@ module.exports = {
                 .setRequired(false)
                 .setMinValue(0)),
 
+    /**  
+     * @param {ChatInputCommandInteraction} interaction 
+    */
     async execute(interaction) {
         const type = interaction.options.getString("type");
 

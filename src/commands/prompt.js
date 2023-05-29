@@ -15,6 +15,9 @@ module.exports = {
                 .setDescription("Prompt")
                 .setRequired(true)),
 
+    /**  
+     * @param {ChatInputCommandInteraction} interaction 
+    */
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: false });
 

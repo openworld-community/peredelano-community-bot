@@ -19,6 +19,9 @@ module.exports = {
                 .addChannelTypes(ChannelType.GuildVoice)
         }),
 
+    /**  
+     * @param {ChatInputCommandInteraction} interaction 
+    */
     async execute(interaction) {
         const channel = interaction.options.getChannel("channel");
 

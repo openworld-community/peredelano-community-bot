@@ -24,6 +24,9 @@ module.exports = {
                         .setRequired(true))
         ),
 
+    /**  
+     * @param {ChatInputCommandInteraction} interaction 
+    */
     async execute(interaction) {
         const command = interaction.options.getSubcommand();
 

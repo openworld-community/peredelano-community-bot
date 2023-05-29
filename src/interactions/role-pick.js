@@ -1,5 +1,11 @@
 "use strict";
+const { ButtonInteraction, SelectMenuInteraction } = require("discord.js");
 
+/**
+ * 
+ * @param {ButtonInteraction | SelectMenuInteraction} interaction 
+ * @returns {void}
+ */
 async function rolePick(interaction) {
     try {
         await interaction.deferReply({ ephemeral: true });

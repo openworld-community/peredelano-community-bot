@@ -53,6 +53,9 @@ module.exports = {
                     .setRequired(true))
         ),
 
+    /**  
+     * @param {ChatInputCommandInteraction} interaction 
+    */
     async execute(interaction) {
         const command = interaction.options.getSubcommand();
 
@@ -99,7 +102,7 @@ module.exports = {
                     type: ChannelType.GuildText,
                     parent: category
                 });
-                
+
                 await interaction.guild.channels.create({
                     name: "командный-форум",
                     type: ChannelType.GuildForum,

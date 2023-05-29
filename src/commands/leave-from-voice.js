@@ -13,6 +13,9 @@ module.exports = {
         .setDescription("Commands the bot to leave from voice channel.")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
+    /**  
+     * @param {ChatInputCommandInteraction} interaction 
+    */
     async execute(interaction) {
         const connection = getVoiceConnection(interaction.guild.id);
         if (connection)

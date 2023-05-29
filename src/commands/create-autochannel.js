@@ -2,7 +2,8 @@
 const {
     SlashCommandBuilder,
     PermissionFlagsBits,
-    ChannelType
+    ChannelType,
+    ChatInputCommandInteraction,
 } = require("discord.js");
 const { CreatedChannel } = require("../database/model");
 
@@ -12,6 +13,9 @@ module.exports = {
         .setDescription("Create autochannel")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
+    /**  
+     * @param {ChatInputCommandInteraction} interaction 
+    */
     async execute(interaction) {
         const category = await interaction.guild.channels.create({
             name: "Created channels",

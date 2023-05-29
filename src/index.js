@@ -6,6 +6,8 @@ const {
 } = require("discord.js");
 const { client } = require("./client");
 const db = require("./database/model");
+const { closeExpiredPolls } = require("./commands/create-poll");
+const { startJob } = require("./utils/job");
 
 const main = async () => {
     require("dotenv").config();
@@ -43,5 +45,7 @@ const main = async () => {
     }
 
     client.login(process.env.TOKEN);
+
+    startJob(closeExpiredPolls, 500, "auto_close_expired_polls");
 }
 main();
