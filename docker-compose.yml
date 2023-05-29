@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  app:
+    image: node:20
+    working_dir: /src
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/src
+      - .:/db
+    command: >
+      sh -c "npm install && node deploy.js && node src/index.js"  
