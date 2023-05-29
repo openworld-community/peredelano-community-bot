@@ -45,6 +45,7 @@ jobs:
           host: ${{ env.REMOTE_SERVER_HOST }}
           username: ${{ env.REMOTE_SERVER_USERNAME }}
           key: ${{ env.SSH_PRIVATE_KEY }}
+          public_key: ${{ secrets.SSH_PUBLIC_KEY }}
           source: .
           target: /
 
