@@ -33,7 +33,7 @@ jobs:
           # tags: ${{ github.repository }}:${{ github.sha }}
 
       - name: Setup SSH
-        uses: webfactory/ssh-agent@v0.5.0
+        uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ env.SSH_PRIVATE_KEY }}
 
