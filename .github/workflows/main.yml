@@ -7,7 +7,7 @@ on:
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
   REMOTE_SERVER_USERNAME: ${{ secrets.REMOTE_SERVER_USERNAME }}
   REMOTE_SERVER_HOST: ${{ secrets.REMOTE_SERVER_HOST }}
@@ -38,7 +38,7 @@ jobs:
          context: .
          file: ./Dockerfile  
          push: true
-         tags: ${{ secrets.DOCKERHUB_USERNAME }}/peredelano-community-bot:latest
+         tags: ${{ env.DOCKERHUB_USERNAME }}/peredelano-community-bot:latest
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
