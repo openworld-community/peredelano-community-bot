@@ -14,6 +14,7 @@ const fs = require("fs");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("collect-profiles")
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .setDescription("Collect profiles to JSON"),
 
     /**  
