@@ -39,6 +39,8 @@ jobs:
          file: ./Dockerfile  
          push: true
          tags: ${{ github.repository }}:${{ github.sha }}
+         secrets: | 
+          GIT_AUTH_TOKEN=${{ secrets.MYTOKEN }}
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
