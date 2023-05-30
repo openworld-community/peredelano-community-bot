@@ -26,19 +26,19 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
           chmod 400 $HOME/.ssh/id_rsa
         
-      # - name: Login to Docker Hub # Возможно в будущем
-       # uses: docker/login-action@v1
-        # with:
-         # username: ${{ secrets.DOCKER_USERNAME }}
-         #  password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to Docker Hub # Возможно в будущем
+        uses: docker/login-action@v1
+        with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
           
-      # - name: Build Docker image # Возможно в будущем
-       # uses: docker/build-push-action@v2
-        # with:
-         # context: .
-          # file: ./Dockerfile  
-           #push: true
-          # tags: ${{ github.repository }}:${{ github.sha }}
+      - name: Build Docker image
+        uses: docker/build-push-action@v2
+        with:
+         context: .
+         file: ./Dockerfile  
+         push: true
+         tags: ${{ github.repository }}:${{ github.sha }}
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
@@ -51,7 +51,6 @@ jobs:
           host: ${{ env.REMOTE_SERVER_HOST }}
           username: ${{ env.REMOTE_SERVER_USERNAME }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          public_key: ${{ env.SSH_PUBLIC_KEY }}
           source: .
           target: /
 
