@@ -1,8 +1,11 @@
 "use strict";
-const { Events } = require('discord.js');
+const { Events, Invite } = require('discord.js');
 
 module.exports = {
     name: Events.InviteCreate,
+    /**
+     * @param {Invite} invite 
+     */
     async execute(invite) {
     },
 };

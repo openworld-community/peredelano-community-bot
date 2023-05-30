@@ -1,11 +1,14 @@
 "use strict";
-const { Events } = require('discord.js');
+const { Events, BaseInteraction, ChatInputCommandInteraction } = require('discord.js');
 const { router } = require("../interactions/router");
 const { client } = require("../client");
 
 module.exports = {
     name: Events.InteractionCreate,
     once: false,
+    /**
+     * @param {BaseInteraction} interaction 
+     */
     async execute(interaction) {
         if (interaction.isChatInputCommand()) {
             await handleChatInputCommand(interaction);
@@ -15,6 +18,9 @@ module.exports = {
     },
 };
 
+/**
+ * @param {ChatInputCommandInteraction} interaction 
+ */
 async function handleChatInputCommand(interaction) {
     console.log(`[CommandHandler] ${interaction.commandName}`);
 

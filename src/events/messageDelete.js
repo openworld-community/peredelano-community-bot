@@ -1,8 +1,11 @@
 "use strict";
-const { Events } = require('discord.js');
+const { Events, Message } = require('discord.js');
 
 module.exports = {
     name: Events.MessageDelete,
+    /**
+     * @param {Message} message 
+     */
     async execute(message) {
     },
 };
