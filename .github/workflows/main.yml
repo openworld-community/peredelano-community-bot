@@ -51,8 +51,8 @@ jobs:
           host: ${{ env.REMOTE_SERVER_HOST }}
           username: ${{ env.REMOTE_SERVER_USERNAME }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          source: "./peredelano-community-bot"
-          target: ./peredelano-community-bot
+          source: "/peredelano-community-bot"
+          target: /peredelano-community-bot
 
       - name: SSH into remote server and deploy Docker Compose
         uses: appleboy/ssh-action@master
@@ -61,7 +61,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ./peredelano-community-bot
+            cd /peredelano-community-bot
             docker-compose pull
             docker-compose up -d
 
