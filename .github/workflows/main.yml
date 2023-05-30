@@ -51,7 +51,7 @@ jobs:
           host: ${{ env.REMOTE_SERVER_HOST }}
           username: ${{ env.REMOTE_SERVER_USERNAME }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          source: "/peredelano-community-bot"
+          source: "/*"
           target: /peredelano-community-bot
 
       - name: SSH into remote server and deploy Docker Compose
