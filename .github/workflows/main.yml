@@ -52,7 +52,7 @@ jobs:
           username: ${{ env.REMOTE_SERVER_USERNAME }}
           key: ${{ env.SSH_PRIVATE_KEY }}
           source: /*
-          target: /peredelano-community-bot
+          target: /root/peredelano-community-bot
 
       - name: SSH into remote server and deploy Docker Compose
         uses: appleboy/ssh-action@master
