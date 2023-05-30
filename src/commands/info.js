@@ -1,13 +1,15 @@
 "use strict";
 const {
     SlashCommandBuilder,
-    EmbedBuilder
+    EmbedBuilder,
+    PermissionFlagsBits
 } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("info")
         .setDescription("Check information about the server")
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addSubcommand(subcommand =>
             subcommand
                 .setName("guild")
