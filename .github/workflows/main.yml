@@ -1,4 +1,4 @@
-name: Build and Deploy discord community bot
+name: CD 
 
 on:
   push:
@@ -11,6 +11,7 @@ env:
   SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
   REMOTE_SERVER_USERNAME: ${{ secrets.REMOTE_SERVER_USERNAME }}
   REMOTE_SERVER_HOST: ${{ secrets.REMOTE_SERVER_HOST }}
+  SSH_PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
   
 jobs:
   build-and-deploy:
@@ -50,7 +51,7 @@ jobs:
           host: ${{ env.REMOTE_SERVER_HOST }}
           username: ${{ env.REMOTE_SERVER_USERNAME }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+          public_key: ${{ env.SSH_PUBLIC_KEY }}
           source: .
           target: /
 
