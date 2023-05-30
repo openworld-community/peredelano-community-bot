@@ -1,6 +1,7 @@
 version: "3.9"
 services:
   app:
+    restart: always
     image: node:20
     working_dir: /src
     ports:
