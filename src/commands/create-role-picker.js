@@ -60,8 +60,8 @@ module.exports = {
 
         const guild = client.guilds.cache.get(interaction.guildId);
 
-        const roles = input
-            .split(" ")
+        const roles = Array
+            .from(new Set(input.split(" ")))
             .map(item => {
                 const m = item.match(/[0-9]+/);
                 return m ? m[0] : "";
@@ -77,9 +77,12 @@ module.exports = {
                     .setCustomId(`role-picker-button:${roleID}`)
                     .setLabel(guild.roles.cache.get(roleID).name)
                     .setStyle(ButtonStyle.Primary));
-                const row1 = new ActionRowBuilder()
-                    .addComponents(...buttons);
-                await client.channels.cache.get(interaction.channelId).send({ content: msgtext, components: [row1] });
+
+                const rows = sliceIntoChunks(buttons, 5)
+                    .map(buttons => new ActionRowBuilder()
+                        .addComponents(...buttons));
+
+                await client.channels.cache.get(interaction.channelId).send({ content: msgtext, components: rows });
                 break;
             case dropdownType:
                 const limit = interaction.options.getNumber("limit");
@@ -103,3 +106,12 @@ module.exports = {
     rolePickerButtonID: "role-picker-button",
     rolePickerDropdownID: "role-picker-dropdown"
 };
+
+function sliceIntoChunks(arr, chunkSize) {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        const chunk = arr.slice(i, i + chunkSize);
+        res.push(chunk);
+    }
+    return res;
+}
