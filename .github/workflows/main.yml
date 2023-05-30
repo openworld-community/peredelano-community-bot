@@ -38,7 +38,8 @@ jobs:
          context: .
          file: ./Dockerfile  
          push: true
-         tags: ${{ env.DOCKERHUB_USERNAME }}/peredelano-community-bot:latest
+         tags: |
+          ${{ env.DOCKERHUB_USERNAME }}/peredelano-community-bot:latest
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
