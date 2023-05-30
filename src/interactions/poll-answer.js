@@ -4,7 +4,7 @@ const { PollAnswer, Poll, sequelize } = require("../database/model");
 
 /**
  * 
- * @param {ButtonInteraction | StringSelectMenuInteraction} interaction 
+ * @param { ButtonInteraction | StringSelectMenuInteraction } interaction 
  * @returns {void}
  */
 async function registerPollAnswer(interaction) {
@@ -73,7 +73,7 @@ async function registerPollAnswer(interaction) {
             const msgID = interaction.message.id;
             const userID = interaction.member.user.id;
 
-            console.log(`[registerPollAnswer] answer number: ${selectedAnswerNumbers}`);
+            console.log(`[registerPollAnswer] answer numbers: ${selectedAnswerNumbers}`);
 
             const poll = await Poll.findOne({
                 where: {
@@ -89,19 +89,27 @@ async function registerPollAnswer(interaction) {
 
             const maxAnswers = poll.max_answers;
 
-            const countAnswers = await PollAnswer.count({
+            const oldAnswers = await PollAnswer.findAll({
                 where: {
                     poll_id: poll.id,
                     user_id: userID,
                 }
             });
 
-            if (selectedAnswerNumbers.length + countAnswers > maxAnswers) {
+            const newAnswers = selectedAnswerNumbers.filter(answer => !oldAnswers.some(item => parseInt(answer) === item.answer_number));
+
+            if (newAnswers.length + oldAnswers.length > maxAnswers) {
                 await interaction.followUp({ content: `Максимальное количество ответов в опросе: ${maxAnswers}`, ephemeral: true });
                 return;
             }
 
+            await Promise.all(newAnswers.map(answer_number => PollAnswer.create({
+                poll_id: poll.id,
+                answer_number: parseInt(answer_number),
+                user_id: userID,
+            })));
 
+            await interaction.followUp({ content: `Ваши голос(а) успешно засчитаны.`, ephemeral: true });
         }
     } catch (err) {
         console.log(`[ERROR] registerPollAnswer: ${err}`);

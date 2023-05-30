@@ -8,7 +8,6 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("create-completion")
         .setDescription("Sends completion to GPT")
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .addStringOption(option =>
             option
                 .setName("prompt")

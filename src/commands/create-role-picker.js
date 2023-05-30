@@ -31,6 +31,11 @@ module.exports = {
                 .setName("roles")
                 .setDescription("List of roles separated by spaces (use @mention)")
                 .setRequired(true))
+        .addStringOption(option =>
+            option
+                .setName("msgtext")
+                .setDescription("Text for message with role-picker")
+                .setRequired(false))
         .addNumberOption(option =>
             option
                 .setName("limit")
@@ -64,6 +69,8 @@ module.exports = {
 
         if (!roles.length || roles.length > 25) return negativeRepl();
 
+        const msgtext = interaction.options.getString("msgtext");
+
         switch (type) {
             case buttonsType:
                 const buttons = roles.map(roleID => new ButtonBuilder()
@@ -72,7 +79,7 @@ module.exports = {
                     .setStyle(ButtonStyle.Primary));
                 const row1 = new ActionRowBuilder()
                     .addComponents(...buttons);
-                await client.channels.cache.get(interaction.channelId).send({ components: [row1] });
+                await client.channels.cache.get(interaction.channelId).send({ content: msgtext, components: [row1] });
                 break;
             case dropdownType:
                 const limit = interaction.options.getNumber("limit");
@@ -88,7 +95,7 @@ module.exports = {
 
                 const row2 = new ActionRowBuilder()
                     .addComponents(select);
-                await client.channels.cache.get(interaction.channelId).send({ components: [row2] });
+                await client.channels.cache.get(interaction.channelId).send({ content: msgtext, components: [row2] });
                 break;
         }
         await interaction.reply({ content: "Role picker created successfully.", ephemeral: true });

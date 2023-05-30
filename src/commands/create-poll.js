@@ -150,24 +150,20 @@ module.exports = {
 };
 
 async function closeExpiredPolls() {
-    const expiredPolls = await sequelize.query(`select * from polls where polls.expired_at < Datetime();`, {
+    const expiredPolls = await sequelize.query(`select * from polls where not is_expired and expired_at < Datetime();`, {
         logging: console.log,
         type: QueryTypes.SELECT,
         model: Poll
     });
 
-    return;
-
     for (const dto of expiredPolls) {
         const poll = dto.dataValues;
 
-        console.log(poll);
+        const maxAnswers = poll.max_answers;
 
         const chan = await client.channels.fetch(poll.channel_id);
 
         if (!chan) return;
-
-        console.log("CHAN:", chan);
 
         /**
          * @type {Message}
@@ -176,23 +172,33 @@ async function closeExpiredPolls() {
 
         if (!msg) return;
 
-        const results = await sequelize.query(
+        const counters = await sequelize.query(
             `select answer_number, count(*) from poll_answers where poll_id = ${poll.id} group by answer_number;`, {
             type: QueryTypes.SELECT
         });
 
-        //TODO: поставить пулу is_expired = true;
+        let pollModel = await Poll.findByPk(poll.id);
+        if (pollModel) {
+            pollModel.is_expired = true;
+            pollModel = (await pollModel.save()).dataValues;
+        }
 
-        console.log(results);
+        console.log("POLL MODEL: ", pollModel);
 
-        // const embed = new EmbedBuilder()
-        //     .setTitle("Опрос")
-        //     .addFields(
-        //         { name: "Вопрос", value: poll.question },
-        //         { name: "Результаты", value: `${maxAnswers}` },
-        //     );
+        const results = counters.reduce((str, item) => {
+            const answer = pollModel[`answer_${item.answer_number}`];
+            return str += `\`${item["count(*)"]} ${item["count(*)"] === 1 ? "ответ" : "ответов"}\`: ${answer}\n`;
+        }, "");
 
+        console.log("results_string: ", results);
 
-        msg.edit("expired");
+        const embed = new EmbedBuilder().setTitle("Опрос").addFields(
+            { name: "Вопрос", value: poll.question },
+            { name: "Результаты", value: results },
+        );
+
+        await msg.delete()
+
+        await chan.send({ embeds: [embed] });
     }
 }
