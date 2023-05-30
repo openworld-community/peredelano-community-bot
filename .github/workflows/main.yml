@@ -32,13 +32,13 @@ jobs:
             username: ${{ secrets.DOCKER_USERNAME }}
             password: ${{ secrets.DOCKER_TOKEN }}
           
-     # - name: Build Docker image
-       # uses: docker/build-push-action@v2
-   #     with:
-       #  context: .
-        # file: ./Dockerfile  
-        # push: true
-        # tags: ${{ github.repository }}:${{ github.sha }}
+      - name: Build Docker image
+        uses: docker/build-push-action@v2
+        with:
+         context: .
+         file: ./Dockerfile  
+         push: true
+         tags: ${{ secrets.DOCKERHUB_USERNAME }}/peredelano-community-bot:latest
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
@@ -51,8 +51,8 @@ jobs:
           host: ${{ env.REMOTE_SERVER_HOST }}
           username: ${{ env.REMOTE_SERVER_USERNAME }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          source: /*
-          target: /root/peredelano-community-bot
+          source: .
+          target: /peredelano-community-bot
 
       - name: SSH into remote server and deploy Docker Compose
         uses: appleboy/ssh-action@master
