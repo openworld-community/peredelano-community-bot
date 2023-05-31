@@ -2,7 +2,9 @@
 const {
     SlashCommandBuilder,
     EmbedBuilder,
-    PermissionFlagsBits
+    PermissionFlagsBits,
+    Guild,
+    ChatInputCommandInteraction
 } = require("discord.js");
 
 module.exports = {
@@ -34,6 +36,9 @@ module.exports = {
 
         switch (command) {
             case "guild": {
+                /**
+                 * @type {Guild}
+                 */
                 const guild = interaction.guild;
                 // Make sure that all roles are cached
                 await guild.roles.fetch();
@@ -47,7 +52,7 @@ module.exports = {
                         {
                             name: 'Guild Features',
                             value: guild.features.length > 0
-                                ? guild.features.map(feature => `${feature}\n`)
+                                ? guild.features.join("\n")
                                 : 'None'
                         },
                         { name: 'Guild Created At', value: `${guild.createdAt}` }

@@ -3,10 +3,14 @@ const {
     Events,
     PermissionsBitField,
     ChannelType,
-    VoiceState
+    VoiceState,
+    VoiceChannel
 } = require("discord.js");
 const { client } = require("../client");
-const { CreatedChannel, TempChannel } = require("../database/model");
+const {
+    CreatedChannel,
+    TempChannel
+} = require("../database/model");
 
 module.exports = {
     name: Events.VoiceStateUpdate,
@@ -18,6 +22,11 @@ module.exports = {
     async execute(oldState, newState) {
         // юзер зашел в канал
         if (newState.channelId) {
+            const tempChannel = await TempChannel.findByPk(oldState.channelId);
+            if (tempChannel) {
+                return await handleLeaveFromTempChannel(tempChannel);
+            }
+
             const createdChan = await CreatedChannel.findByPk(newState.channelId);
             if (!createdChan) return;
 
@@ -44,9 +53,18 @@ module.exports = {
             }
         } else { // вышел из канала
             const tempChannel = await TempChannel.findByPk(oldState.channelId);
-            
             if (!tempChannel) return;
-            await client.channels.cache.get(tempChannel.channel_id).delete();
+            
+            await handleLeaveFromTempChannel(tempChannel)
         }
     },
 };
+
+async function handleLeaveFromTempChannel(tempChannel) {
+    /**
+     * @type {VoiceChannel}
+     */
+    const chan = await client.channels.fetch(tempChannel.channel_id);
+    if (chan && chan.members.size == 0)
+        await chan.delete();
+}
