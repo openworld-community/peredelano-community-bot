@@ -43,6 +43,13 @@ module.exports = {
                 // Make sure that all roles are cached
                 await guild.roles.fetch();
 
+                console.log("GUILD FEATURES: ", guild.features);
+
+                console.log("feature join: ");
+                console.log(guild.features.length > 0
+                    ? guild.features.join("\n")
+                    : 'None')
+
                 const embed = new EmbedBuilder()
                     .setTitle(guild.name)
                     .addFields(
