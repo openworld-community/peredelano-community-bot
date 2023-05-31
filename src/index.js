@@ -48,4 +48,4 @@ const main = async () => {
 
     startJob(closeExpiredPolls, 500, "auto_close_expired_polls");
 }
-main();
+main().catch(console.error);

@@ -13,7 +13,7 @@ const startJob = async (callback, interval, name) => {
         } catch (err) {
             console.error(`[ERROR] ${name} job execution: ${err}`);
         }
-        timerID = setTimeout(tick, 1000)
+        timerID = setTimeout(tick, interval)
     }, 0);
 
 }

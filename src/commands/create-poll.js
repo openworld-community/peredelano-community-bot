@@ -151,7 +151,6 @@ module.exports = {
 
 async function closeExpiredPolls() {
     const expiredPolls = await sequelize.query(`select * from polls where not is_expired and expired_at < Datetime();`, {
-        logging: console.log,
         type: QueryTypes.SELECT,
         model: Poll
     });
