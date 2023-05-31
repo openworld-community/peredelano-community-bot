@@ -67,6 +67,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /peredelano-community-bot
-            docker-compose pull
-            docker-compose up -d
+            docker-compose up
 
