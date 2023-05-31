@@ -2,7 +2,8 @@
 const {
     Events,
     PermissionsBitField,
-    ChannelType
+    ChannelType,
+    VoiceState
 } = require("discord.js");
 const { client } = require("../client");
 const { CreatedChannel, TempChannel } = require("../database/model");
@@ -10,6 +11,10 @@ const { CreatedChannel, TempChannel } = require("../database/model");
 module.exports = {
     name: Events.VoiceStateUpdate,
     once: false,
+    /**
+     * @param {VoiceState} oldState 
+     * @param {VoiceState} newState 
+     */
     async execute(oldState, newState) {
         // юзер зашел в канал
         if (newState.channelId) {

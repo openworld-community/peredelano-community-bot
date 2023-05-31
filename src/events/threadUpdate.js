@@ -1,8 +1,12 @@
 "use strict";
-const { Events } = require('discord.js');
+const { Events, ThreadChannel } = require('discord.js');
 
 module.exports = {
     name: Events.ThreadUpdate,
+    /**
+     * @param {ThreadChannel} oldThread 
+     * @param {ThreadChannel} newThread 
+     */
     async execute(oldThread, newThread) {
     },
 };

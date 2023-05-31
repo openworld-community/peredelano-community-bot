@@ -3,9 +3,7 @@ const { ButtonInteraction, SelectMenuInteraction, StringSelectMenuInteraction } 
 const { PollAnswer, Poll, sequelize } = require("../database/model");
 
 /**
- * 
  * @param { ButtonInteraction | StringSelectMenuInteraction } interaction 
- * @returns {void}
  */
 async function registerPollAnswer(interaction) {
     try {
