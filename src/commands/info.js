@@ -2,7 +2,6 @@
 const {
     SlashCommandBuilder,
     EmbedBuilder,
-    PermissionFlagsBits,
     Guild,
     ChatInputCommandInteraction
 } = require("discord.js");
@@ -11,7 +10,6 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName("info")
         .setDescription("Check information about the server")
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addSubcommand(subcommand =>
             subcommand
                 .setName("guild")
