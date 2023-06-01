@@ -25,7 +25,7 @@ module.exports = {
         if (newState.channelId) {
             const tempChannel = await TempChannel.findByPk(oldState.channelId);
             if (tempChannel) {
-                return await handleLeaveFromTempChannel(tempChannel);
+                await handleLeaveFromTempChannel(tempChannel);
             }
 
             const createdChan = await CreatedChannel.findByPk(newState.channelId);
@@ -63,7 +63,7 @@ module.exports = {
         } else { // вышел из канала
             const tempChannel = await TempChannel.findByPk(oldState.channelId);
             if (!tempChannel) return;
-            
+
             await handleLeaveFromTempChannel(tempChannel)
         }
     },
