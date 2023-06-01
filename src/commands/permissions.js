@@ -2,10 +2,10 @@
 const {
     SlashCommandBuilder,
     ChatInputCommandInteraction,
-    ChannelType,
     TextChannel,
     VoiceChannel,
-    ForumChannel
+    ForumChannel,
+    PermissionFlagsBits
 } = require("discord.js");
 
 module.exports = {
@@ -54,6 +54,9 @@ module.exports = {
         const user = interaction.options.getUser("user");
         /**@type {TextChannel | VoiceChannel | ForumChannel} */
         const channel = interaction.options.getChannel("channel");
+
+        if (!channel.permissionsFor(interaction.member).has(PermissionFlagsBits.ManageRoles))
+            return await interaction.reply({ content: "У вас недостаточно прав для редактирования указанного канала.", ephemeral: true });
 
         switch (command) {
             case "add": {
