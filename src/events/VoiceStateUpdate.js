@@ -4,7 +4,8 @@ const {
     PermissionsBitField,
     ChannelType,
     VoiceState,
-    VoiceChannel
+    VoiceChannel,
+    PermissionFlagsBits
 } = require("discord.js");
 const { client } = require("../client");
 const {
@@ -40,7 +41,15 @@ module.exports = {
                     name: user.username,
                     parent: category,
                     type: ChannelType.GuildVoice,
-                    permissionOverwrites: [{ id: user.id, allow: [PermissionsBitField.Flags.Administrator] }],
+                    permissionOverwrites: [
+                        {
+                            id: user.id,
+                            allow: [
+                                PermissionFlagsBits.ManageChannels,
+                                PermissionFlagsBits.ManageRoles
+                            ]
+                        }
+                    ],
                 });
 
                 await TempChannel.create({
