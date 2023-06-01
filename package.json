@@ -1,23 +1,22 @@
 {
-  "name": "peredelano-community-bot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@discordjs/voice": "^0.16.0",
-    "discord-fetch-all": "^3.0.2",
-    "discord.js": "^14.11.0",
-    "dotenv": "^16.0.3",
-    "sequelize": "^6.31.1",
-    "sqlite3": "^5.1.6"
-  },
-  "devDependencies": {
-    "eslint": "^8.41.0"
-  }
+    "name": "peredelano-community-bot",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@discordjs/voice": "^0.16.0",
+        "discord.js": "^14.11.0",
+        "dotenv": "^16.0.3",
+        "sequelize": "^6.31.1",
+        "sqlite3": "^5.1.6"
+    },
+    "devDependencies": {
+        "eslint": "^8.41.0"
+    }
 }
