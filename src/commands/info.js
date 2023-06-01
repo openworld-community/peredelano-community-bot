@@ -9,20 +9,20 @@ const {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("info")
-        .setDescription("Check information about the server")
+        .setDescription("Просмотр информации")
         .addSubcommand(subcommand =>
             subcommand
                 .setName("guild")
-                .setDescription("View guild information")
+                .setDescription("Просмотр информации о сервере")
         )
         .addSubcommand(subcommand =>
             subcommand
                 .setName("role")
-                .setDescription("View role information")
+                .setDescription("Просмотр информации о роли")
                 .addRoleOption(option =>
                     option
                         .setName("role")
-                        .setDescription("Role that you are viewing")
+                        .setDescription("Роль, информацию о которой вы хотите посмотреть")
                         .setRequired(true))
         ),
 
@@ -41,26 +41,19 @@ module.exports = {
                 // Make sure that all roles are cached
                 await guild.roles.fetch();
 
-                console.log("GUILD FEATURES: ", guild.features);
-
-                console.log("feature join: ");
-                console.log(guild.features.length > 0
-                    ? guild.features.join("\n")
-                    : 'None')
-
                 const embed = new EmbedBuilder()
                     .setTitle(guild.name)
                     .addFields(
-                        { name: 'Guild Members', value: `${guild.memberCount}`, inline: true },
-                        { name: 'Guild Channels', value: `${guild.channels.channelCountWithoutThreads} / 500`, inline: true },
-                        { name: 'Guild Roles', value: `${guild.roles.cache.size} / 250`, inline: true },
+                        { name: 'Количество пользователей', value: `${guild.memberCount}`, inline: true },
+                        { name: 'Количество созданных каналы', value: `${guild.channels.channelCountWithoutThreads} / 500`, inline: true },
+                        { name: 'Количество ролей', value: `${guild.roles.cache.size} / 250`, inline: true },
                         {
                             name: 'Guild Features',
                             value: guild.features.length > 0
                                 ? guild.features.join("\n")
                                 : 'None'
                         },
-                        { name: 'Guild Created At', value: `${guild.createdAt}` }
+                        { name: 'Дата создания сервера', value: `${guild.createdAt}` }
                     );
 
                 await interaction.reply({ embeds: [embed], ephemeral: true });

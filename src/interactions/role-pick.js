@@ -14,16 +14,16 @@ async function rolePick(interaction) {
             const role = interaction.guild.roles.cache.get(roleID);
             if (!role) {
                 console.log(`[WARN] non-existent role ${roleID} is selected`);
-                await interaction.followUp("selected role does not exist");
+                await interaction.followUp("Выбранная роль больше не существует...");
                 return;
             }
 
             if (interaction.member.roles.cache.has(roleID)) {
                 await interaction.member.roles.remove(role);
-                await interaction.followUp({ content: `You successfully removed the role ${role.toString()}`, ephemeral: true });
+                await interaction.followUp({ content: `Вы успешно сняли с себя роль ${role.toString()}.`, ephemeral: true });
             } else {
                 await interaction.member.roles.add(role);
-                await interaction.followUp({ content: `You successfully received the role ${role.toString()}`, ephemeral: true });
+                await interaction.followUp({ content: `Вы успешно получили себе роль ${role.toString()}.`, ephemeral: true });
             }
         } else if (interaction.isStringSelectMenu()) {
             const selectedRoles = interaction.values
@@ -44,9 +44,9 @@ async function rolePick(interaction) {
             const addedRoles = rolesToAdd.reduce((msg, role) => msg += `${role.toString()} `, "");
 
             if (removedRoles.length)
-                await interaction.followUp({ content: `You successfully removed roles: ${removedRoles}`, ephemeral: true });
+                await interaction.followUp({ content: `Вы успешно сняли с себя следующие роли: ${removedRoles}`, ephemeral: true });
             if (addedRoles.length)
-                await interaction.followUp({ content: `You successfully received roles: ${addedRoles}`, ephemeral: true });
+                await interaction.followUp({ content: `Вы успешно получили себе следующие роли: ${addedRoles}`, ephemeral: true });
         }
     } catch (e) {
         console.log(`[ERROR] ${e}`)

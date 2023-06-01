@@ -10,7 +10,7 @@ const { CreatedChannel } = require("../database/model");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("create-autochannel")
-        .setDescription("Create autochannel")
+        .setDescription("Создает категорию с автоматическими голосовыми каналами")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     /**  
@@ -33,6 +33,6 @@ module.exports = {
             category_id: category.id,
         });
 
-        await interaction.reply({ content: "Voice channels created successfully.", ephemeral: true });
+        await interaction.reply({ content: "Категория с автоматическими голосовыми каналами успешно создана.", ephemeral: true });
     },
 };
