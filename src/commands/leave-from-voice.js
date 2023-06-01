@@ -10,7 +10,7 @@ const { client } = require("../client");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("leave-from-voice")
-        .setDescription("Commands the bot to leave from voice channel.")
+        .setDescription("Отсоединиться ботом от голосового канала")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     /**  
@@ -21,7 +21,7 @@ module.exports = {
         if (connection)
             connection.destroy();
 
-        await interaction.reply({ content: "Bot leaved from voice channel", ephemeral: true });
+        await interaction.reply({ content: "Бот успешно отключился от голосового канала.", ephemeral: true });
     }
 };
 

@@ -12,12 +12,12 @@ const {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("send-message")
-        .setDescription("Send a message to the specified channel")
+        .setDescription("Отправить сообщение в указанный канал")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .addChannelOption(option => {
             return option
                 .setName("channel")
-                .setDescription("Text channel")
+                .setDescription("Канал в который необходимо отправить сообщение")
                 .setRequired(true)
                 .addChannelTypes(ChannelType.GuildText);
         }),

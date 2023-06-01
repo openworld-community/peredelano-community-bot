@@ -24,12 +24,12 @@ const dropdownType = "dropdown";
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("create-poll")
-        .setDescription("Creates a pool.")
+        .setDescription("Создает опрос")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addStringOption(option =>
             option
                 .setName("type")
-                .setDescription("Poll type.")
+                .setDescription("Тип интеракции в опросе")
                 .setRequired(true)
                 .addChoices(
                     { name: "Buttons", value: buttonsType },
@@ -37,20 +37,20 @@ module.exports = {
                 ))
         .addStringOption(option => option
             .setName("question")
-            .setDescription("Poll question.")
+            .setDescription("Вопрос, который будет задан пользователям")
             .setRequired(true))
         .addStringOption(option => option
             .setName("answers")
-            .setDescription("A list of answers separated by comma")
+            .setDescription("Список возможных ответов, разделенные через ;")
             .setRequired(true))
         .addNumberOption(option => option
             .setName("duration")
             .setRequired(true)
-            .setDescription("Vote duration in minutes.")
+            .setDescription("Длительность опроса в минутах")
             .setRequired(false))
         .addNumberOption(option => option
             .setName("maxanswers")
-            .setDescription("Max answers.")),
+            .setDescription("Максимальное количество ответов (по-умолчанию 1)")),
 
     /**  
       * @param {ChatInputCommandInteraction} interaction 
@@ -59,7 +59,7 @@ module.exports = {
         const type = interaction.options.getString("type");
 
         const negativeRepl = () => interaction.reply({
-            content: "Enter 1 to 20 answers, separated by semicolon.",
+            content: "Введите от 1 до до 20 ответов, разделенными через ;",
             ephemeral: true
         });
 
@@ -142,7 +142,7 @@ module.exports = {
 
         await Poll.create(pollToCreate);
 
-        await interaction.reply({ content: "Poll has been successfully created", ephemeral: true });
+        await interaction.reply({ content: "Опрос был успешно создан.", ephemeral: true });
     },
     closeExpiredPolls: closeExpiredPolls,
     pollButtonID: "poll-button",

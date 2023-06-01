@@ -16,11 +16,11 @@ const dropdownType = "dropdown"
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("create-role-picker")
-        .setDescription("Creates a role picker to select the specified roles (max 25)")
+        .setDescription("Создает интерфейс выбора указанных ролей (максимум 25)")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addStringOption(option =>
             option.setName("type")
-                .setDescription("Role picker type")
+                .setDescription("Тип интеракции")
                 .setRequired(true)
                 .addChoices(
                     { name: "Buttons", value: buttonsType },
@@ -29,17 +29,17 @@ module.exports = {
         .addStringOption(option =>
             option
                 .setName("roles")
-                .setDescription("List of roles separated by spaces (use @mention)")
+                .setDescription("Список ролей, разделенный пробелом (используйте @упоминание)")
                 .setRequired(true))
         .addStringOption(option =>
             option
                 .setName("msgtext")
-                .setDescription("Text for message with role-picker")
+                .setDescription("Текстовое сообщение над интерфейсом выбора ролей")
                 .setRequired(false))
         .addNumberOption(option =>
             option
                 .setName("limit")
-                .setDescription("Number of roles that can be selected (only for the dropdown list)")
+                .setDescription("Выберите максимальное количество ролей, которые можно выбрать (только для выпадающего списка)")
                 .setRequired(false)
                 .setMinValue(0)),
 
@@ -50,7 +50,7 @@ module.exports = {
         const type = interaction.options.getString("type");
 
         const negativeRepl = () => interaction.reply({
-            content: "Enter 1 to 25 roles, separated by space",
+            content: "Введите от 1 до 25 ролей, разделенные пробелом.",
             ephemeral: true
         });
 
@@ -101,7 +101,7 @@ module.exports = {
                 await client.channels.cache.get(interaction.channelId).send({ content: msgtext, components: [row2] });
                 break;
         }
-        await interaction.reply({ content: "Role picker created successfully.", ephemeral: true });
+        await interaction.reply({ content: "Интерфейс для выбора ролей успешно создан.", ephemeral: true });
     },
     rolePickerButtonID: "role-picker-button",
     rolePickerDropdownID: "role-picker-dropdown"

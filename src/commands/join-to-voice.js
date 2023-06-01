@@ -9,12 +9,12 @@ const { joinVoiceChannel } = require("@discordjs/voice");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("join-to-voice")
-        .setDescription("Commands the bot to enter the voice channel.")
+        .setDescription("Присоединить бота к голосовому каналу")
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addChannelOption(option => {
             return option
                 .setName("channel")
-                .setDescription("Voice channel")
+                .setDescription("Голосовой канал, в который боту необходимо зайти")
                 .setRequired(true)
                 .addChannelTypes(ChannelType.GuildVoice)
         }),
@@ -31,6 +31,6 @@ module.exports = {
             adapterCreator: channel.guild.voiceAdapterCreator,
         });
 
-        await interaction.reply({ content: "Bot joined to voice channel", ephemeral: true });
+        await interaction.reply({ content: "Бот успешно присоединился к голосовому каналу.", ephemeral: true });
     }
 };

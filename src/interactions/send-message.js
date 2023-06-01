@@ -11,12 +11,12 @@ async function sendMessage(interaction) {
         if (chan) {
             await chan.send(msgText)
             await interaction.reply({
-                content: `Message was successfully sent to ${chan.toString()}`,
+                content: `Сообщение успешно отправлено в канал ${chan.toString()}.`,
                 ephemeral: true
             });
         } else {
             await interaction.reply({
-                content: `Channel does not exist!`,
+                content: `Канал не существует!`,
                 ephemeral: true
             });
             console.log(`Invalid channel ID: ${chanID}`);
