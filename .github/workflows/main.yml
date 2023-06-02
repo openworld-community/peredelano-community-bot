@@ -24,6 +24,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
       # -  name: Copy files via SSH
        # run: |
          # mkdir -p $HOME/.ssh
@@ -66,7 +67,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd ~/peredelano-community-bot
+            cd peredelano-community-bot
             git pull origin main
             docker-compose up -d
 
