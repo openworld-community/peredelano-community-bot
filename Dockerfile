@@ -1,15 +1,17 @@
-FROM node:20
+FROM node:18
 
-WORKDIR /src
+COPY . /app
 
-COPY package*.json ./
+COPY ./.env /app
 
-RUN npm install
+WORKDIR /app/src
 
-COPY . .
+RUN npm i -D sqlite3
+
+RUN npm ci
+
+RUN node /app/deploy.js
 
 EXPOSE 8080
-
-RUN node deploy.js
 
 CMD ["node", "src/index.js"]

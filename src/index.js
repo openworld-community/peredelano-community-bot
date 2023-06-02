@@ -44,6 +44,8 @@ const main = async () => {
         }
     }
 
+    console.log("TOKEN: ", process.env.TOKEN);
+
     client.login(process.env.TOKEN);
 
     startJob(closeExpiredPolls, 500, "auto_close_expired_polls");

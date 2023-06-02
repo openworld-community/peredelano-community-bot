@@ -9,6 +9,39 @@ const sequelize = new Sequelize({
     storage: dbPath,
 });
 
+
+// Message сообщение в дискорде.
+const Message = sequelize.define("discord_message", {
+    id: {
+        type: DataTypes.TEXT,
+        primaryKey: true
+    },
+    content: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    timestamp: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    user_id: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    user_name: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    channel_id: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    channel_name: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+});
+
 // CreatedChannel канал от которого создаются подканалы.
 const CreatedChannel = sequelize.define("created_channel", {
     channel_id: {
@@ -165,4 +198,5 @@ module.exports = {
     TempChannel: TempChannel,
     Poll: Poll,
     PollAnswer: PollAnswer,
+    Message: Message,
 };

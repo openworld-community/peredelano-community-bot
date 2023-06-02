@@ -2,12 +2,22 @@ version: "3.9"
 services:
   app:
     restart: always
-    image: node:20
-    working_dir: /src
+    build:
+      dockerfile: Dockerfile
+      context: .
     ports:
       - "8080:8080"
     volumes:
       - .:/src
       - .:/db
-    command: >
-      sh -c "npm install && node deploy.js && node src/index.js"  
+      - ./grafana-storage:/var/lib/grafana
+    environment:
+      - TOKEN=${TOKEN}
+      - APP_ID=${APP_ID}
+      - SERVER_ID=${SERVER_ID}
+    command: [ "node", "/app/src/index.js" ]
+  grafana:
+    image: grafana/grafana-enterprise:8.2.0
+    ports:
+      - 3000:3000
+    user: '472'
