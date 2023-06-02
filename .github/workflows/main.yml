@@ -30,11 +30,11 @@ jobs:
          # echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
         #  chmod 400 $HOME/.ssh/id_
         
-      - name: Login to Docker Hub # Возможно в будущем
-        uses: docker/login-action@v1
-        with:
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_TOKEN }}
+    #  - name: Login to Docker Hub # Возможно в будущем
+      #  uses: docker/login-action@v1
+      #  with:
+          #  username: ${{ secrets.DOCKER_USERNAME }}
+          #  password: ${{ secrets.DOCKER_TOKEN }}
           
       # - name: Build Docker image
        # uses: docker/build-push-action@v2
@@ -50,14 +50,14 @@ jobs:
         with:
           ssh-private-key: ${{ env.SSH_PRIVATE_KEY }}
       
-      - name: Copy Docker Compose files to remote server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ env.REMOTE_SERVER_HOST }}
-          username: ${{ env.REMOTE_SERVER_USERNAME }}
-          key: ${{ env.SSH_PRIVATE_KEY }}
-          source: .
-          target: /peredelano-community-bot
+      # - name: Copy Docker Compose files to remote server
+       # uses: appleboy/scp-action@master
+ #        with:
+  #        host: ${{ env.REMOTE_SERVER_HOST }}
+   #       username: ${{ env.REMOTE_SERVER_USERNAME }}
+   #       key: ${{ env.SSH_PRIVATE_KEY }}
+    #      source: .
+      #    target: /peredelano-community-bot
 
       - name: SSH into remote server and deploy Docker Compose
         uses: appleboy/ssh-action@master
@@ -66,6 +66,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /peredelano-community-bot
+            cd peredelano-community-bot
+            git pull origin main
             docker-compose up -d
 
