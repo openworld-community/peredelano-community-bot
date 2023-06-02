@@ -69,7 +69,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /root/peredelano-community-bot
+            cd /root/bot/peredelano-community-bot
             git pull origin main 
             docker stop $(docker ps -a -q)
             docker-compose up -d
