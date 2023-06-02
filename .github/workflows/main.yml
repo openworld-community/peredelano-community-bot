@@ -69,5 +69,6 @@ jobs:
           script: |
             cd /root/peredelano-community-bot
             git pull origin main
+            docker stop
             docker-compose up -d
 
