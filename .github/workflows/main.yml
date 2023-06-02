@@ -17,7 +17,7 @@ jobs:
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.7.0
         with:
-          ssh-private-key: ${{ env.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       
 
       - name: SSH into remote server and deploy Docker Compose
@@ -27,7 +27,7 @@ jobs:
           username: ${{ secrets.REMOTE_SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /root/bot/peredelano-community-bot
+            cd /root/peredelano-community-bot
             git pull origin main 
             docker stop $(docker ps -a -q)
             docker-compose up -d
