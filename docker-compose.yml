@@ -3,19 +3,21 @@ services:
   app:
     restart: always
     build:
-      dockerfile: Dockerfile
+      dockerfile: build/app/Dockerfile
       context: .
     ports:
       - "8080:8080"
-    volumes:
-      - /var/lib/pcb/db/db.sqlite:/app/db/db.sqlite
+    # volumes:
+    #   - /var/lib/pcb/db/db.sqlite:/app/db/db.sqlite
     environment:
       - TOKEN=${TOKEN}
       - APP_ID=${APP_ID}
       - SERVER_ID=${SERVER_ID}
     command: [ "node", "/app/src/index.js" ]
   grafana:
-    image: grafana/grafana-enterprise:8.2.0
+    build:
+      dockerfile: build/grafana/Dockerfile
+      context: .
     ports:
       - 3000:3000
     user: root

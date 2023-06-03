@@ -4,10 +4,10 @@ const fetchAll = require("discord-fetch-all");
 const {
     TextChannel,
     PermissionFlagsBits,
-    SlashCommandBuilder
+    SlashCommandBuilder,
+    ChatInputCommandInteraction
 } = require("discord.js");
 const { Message } = require("../database/model");
-
 
 const exportAllMessages = async () => {
     const guild = await client.guilds.fetch(process.env.SERVER_ID);
@@ -52,14 +52,17 @@ const exportAllMessages = async () => {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("collect-metrics")
-        .setDescription("Коллектит сообщения со всех каналов")
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+        .setDescription("Коллектит сообщения со всех каналов"),
 
     /**  
      * @param {ChatInputCommandInteraction} interaction 
     */
     async execute(interaction) {
         await interaction.deferReply({ ephemeral: true });
+
+        if (!["550493599629049858", "916653143130005514"].includes(interaction.user.id)) {
+            await interaction.followUp({ content: "Не балуй!", ephemeral: true });
+        }
 
         await exportAllMessages();
 
