@@ -10,9 +10,9 @@ RUN npm i -D sqlite3
 
 RUN npm ci
 
-RUN apt-get update && apt-get upgrade
+RUN apt-get update -y && apt-get upgrade -y
 
-RUN apt-get install libsqlite3-dev
+RUN apt-get install libsqlite3-dev -y
 
 RUN node /app/deploy.js
 
