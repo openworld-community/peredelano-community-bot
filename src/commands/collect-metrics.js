@@ -3,13 +3,34 @@ const { client } = require("../client");
 const fetchAll = require("discord-fetch-all");
 const {
     TextChannel,
-    PermissionFlagsBits,
     SlashCommandBuilder,
     ChatInputCommandInteraction
 } = require("discord.js");
 const { Message } = require("../database/model");
 
-const exportAllMessages = async () => {
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName("collect-metrics")
+        .setDescription("Коллектит сообщения со всех каналов"),
+
+    /**  
+     * @param {ChatInputCommandInteraction} interaction 
+    */
+    async execute(interaction) {
+        await interaction.deferReply({ ephemeral: true });
+
+        if (!["550493599629049858", "916653143130005514"].includes(interaction.user.id)) {
+            await interaction.followUp({ content: "Не балуй!", ephemeral: true });
+            return;
+        }
+
+        await exportAllMessages();
+
+        await interaction.followUp({ content: "Метрики собраны.", ephemeral: true });
+    },
+}
+
+async function exportAllMessages() {
     const guild = await client.guilds.fetch(process.env.SERVER_ID);
 
     await Message.destroy({
@@ -47,25 +68,4 @@ const exportAllMessages = async () => {
 
     }
     await Promise.all(messages);
-}
-
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("collect-metrics")
-        .setDescription("Коллектит сообщения со всех каналов"),
-
-    /**  
-     * @param {ChatInputCommandInteraction} interaction 
-    */
-    async execute(interaction) {
-        await interaction.deferReply({ ephemeral: true });
-
-        if (!["550493599629049858", "916653143130005514"].includes(interaction.user.id)) {
-            await interaction.followUp({ content: "Не балуй!", ephemeral: true });
-        }
-
-        await exportAllMessages();
-
-        await interaction.followUp({ content: "Метрики собраны.", ephemeral: true });
-    },
 }
