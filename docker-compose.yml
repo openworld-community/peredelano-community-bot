@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./db/db.sqlite:/var/lib/pcb/db/db.sqlite
+      - /var/lib/pcb/db/db.sqlite:/app/db/db.sqlite
     environment:
       - TOKEN=${TOKEN}
       - APP_ID=${APP_ID}
