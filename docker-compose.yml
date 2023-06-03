@@ -8,7 +8,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - /app/db/db.sqlite:/var/lib/pcb/db/db.sqlite
+      - ./db/db.sqlite:/var/lib/pcb/db/db.sqlite
     environment:
       - TOKEN=${TOKEN}
       - APP_ID=${APP_ID}
@@ -20,4 +20,4 @@ services:
       - 3000:3000
     user: root
     volumes:
-      - ./grafana-storage:/var/lib/grafana
+      - ./var/lib/grafana:/var/lib/grafana
