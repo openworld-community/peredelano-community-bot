@@ -11,6 +11,6 @@ module.exports = {
      */
     async execute(client) {
         console.info(`[INFO] CLIENT STARTED AS ${client.user.tag}`);
-        startJob(updateMembersCounter.bind(this, client), 1000 * 60 * 30, "update_member_counter");
+        startJob(updateMembersCounter.bind(this, client), 1000 * 60 * 1, "update_member_counter");
     },
 };
