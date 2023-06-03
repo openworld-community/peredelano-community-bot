@@ -1,6 +1,7 @@
 version: "3.9"
 services:
   app:
+    user: root
     restart: always
     build:
       dockerfile: build/app/Dockerfile
@@ -23,3 +24,4 @@ services:
     user: root
     volumes:
       - /var/lib/grafana:/var/lib/grafana
+      - /var/lib/pcb/db/db.sqlite:/var/lib/discord/db.sqlite

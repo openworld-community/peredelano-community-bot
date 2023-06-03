@@ -8,6 +8,7 @@ const {
 } = require("discord.js");
 const { Message } = require("../database/model");
 
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("collect-metrics")
@@ -33,14 +34,9 @@ module.exports = {
 async function exportAllMessages() {
     const guild = await client.guilds.fetch(process.env.SERVER_ID);
 
-    await Message.destroy({
-        where: {},
-        truncate: true
-    });
-
     const messages = [];
     for (const chan of guild.channels.cache.values()) {
-        if (!(chan instanceof TextChannel)) continue;
+        if (!chan.messages) continue;
 
         const chanMsgs = await fetchAll.messages(chan, {
             userOnly: true
