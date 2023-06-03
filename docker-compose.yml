@@ -8,9 +8,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - .:/src
-      - .:/db
-      - ./grafana-storage:/var/lib/grafana
+      - /app/db:/var/lib/pcb/db
     environment:
       - TOKEN=${TOKEN}
       - APP_ID=${APP_ID}
@@ -21,3 +19,5 @@ services:
     ports:
       - 3000:3000
     user: '472'
+    volumes:
+      - ./grafana-storage:/var/lib/grafana
