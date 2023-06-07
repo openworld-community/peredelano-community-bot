@@ -32,5 +32,5 @@ async function editMesssage(interaction) {
 }
 
 module.exports = {
-    editMesssage: editMesssage,
+    editMesssage: editMesssage
 };
