@@ -6,7 +6,7 @@ const { ModalSubmitInteraction, TextBasedChannel } = require("discord.js");
 /**
  * @param {ModalSubmitInteraction} interaction
  */
-async function editMesssage(interaction) {
+async function editMessage(interaction) {
     const messageContent = interaction.fields.getTextInputValue(messageTextInputID);
     const params = interaction.customId.split(":");
     const channelId = params[1];
@@ -32,5 +32,5 @@ async function editMesssage(interaction) {
 }
 
 module.exports = {
-    editMesssage: editMesssage
+    editMessage: editMessage
 };

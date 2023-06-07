@@ -1,7 +1,7 @@
 "use strict";
 const { Collection } = require("discord.js");
 const { sendMessage } = require("./send-message");
-const { editMesssage } = require("./edit-message");
+const { editMessage } = require("./edit-message");
 const { sendEmbed } = require("./send-embed");
 const { rolePick } = require("./role-pick");
 const { sendMessageModalID } = require("../commands/send-message");
@@ -14,7 +14,7 @@ const { registerPollAnswer } = require("./poll-answer");
 const router = new Collection();
 
 router.set(sendMessageModalID, sendMessage);
-router.set(editMessageModalID, editMesssage);
+router.set(editMessageModalID, editMessage);
 router.set(sendEmbedModalID, sendEmbed);
 router.set(rolePickerButtonID, rolePick);
 router.set(rolePickerDropdownID, rolePick);
