@@ -6,7 +6,8 @@ const {
     TextInputStyle,
     ActionRowBuilder,
     PermissionFlagsBits,
-    ChannelType
+    ChannelType,
+    ChatInputCommandInteraction
 } = require("discord.js");
 
 

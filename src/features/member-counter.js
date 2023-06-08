@@ -1,5 +1,5 @@
 "use strict";
-const { Client, ActivityType, PresenceStatus } = require("discord.js");
+const { Client, ActivityType } = require("discord.js");
 
 /**
  * 
@@ -7,7 +7,6 @@ const { Client, ActivityType, PresenceStatus } = require("discord.js");
  */
 async function updateMembersCounter(client) {
     const guild = await client.guilds.fetch(process.env.SERVER_ID)
-    console.log("updateMembersCounter");
     const onlineMembers = guild.members.cache.filter(m => m.presence && m.presence.status === "online").size;
     await client.user.setActivity({
         type: ActivityType.Watching,
