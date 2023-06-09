@@ -2,6 +2,7 @@
 const { Client, ActivityType } = require("discord.js");
 
 /**
+ * Обновляет счетчик пользователей в статусе боте
  * @param {Client} client 
  */
 async function updateMembersCounter(client) {
