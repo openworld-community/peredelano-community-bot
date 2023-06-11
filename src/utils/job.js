@@ -1,7 +1,6 @@
 "use strict";
 
 /**
- * 
  * @param {(args: any[]) => void} callback 
  * @param {number} interval 
  * @param {string} name

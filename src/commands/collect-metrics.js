@@ -2,7 +2,6 @@
 const { client } = require("../client");
 const fetchAll = require("discord-fetch-all");
 const {
-    TextChannel,
     SlashCommandBuilder,
     ChatInputCommandInteraction
 } = require("discord.js");
