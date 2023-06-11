@@ -6,7 +6,8 @@ const {
     TextInputStyle,
     ActionRowBuilder,
     PermissionFlagsBits,
-    ChannelType
+    ChannelType,
+    ChatInputCommandInteraction
 } = require("discord.js");
 
 module.exports = {
@@ -14,19 +15,17 @@ module.exports = {
         .setName("send-message")
         .setDescription("Отправить сообщение в указанный канал")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
-        .addChannelOption(option => {
-            return option
+        .addChannelOption(option =>
+            option
                 .setName("channel")
                 .setDescription("Канал в который необходимо отправить сообщение")
-                .setRequired(true)
-                .addChannelTypes(ChannelType.GuildText);
-        }),
+                .addChannelTypes(ChannelType.GuildText)),
 
     /**  
      * @param {ChatInputCommandInteraction} interaction 
     */
     async execute(interaction) {
-        const channel = interaction.options.getChannel("channel");
+        const channel = interaction.options.getChannel("channel") ?? interaction.channel;
 
         const modal = new ModalBuilder()
             .setCustomId(`${this.sendMessageModalID}:${channel.id}`)
