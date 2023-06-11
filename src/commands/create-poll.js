@@ -9,13 +9,11 @@ const {
     StringSelectMenuBuilder,
     ActionRowBuilder,
     ChatInputCommandInteraction,
-    Collection,
-    Message
+    Message,
 } = require("discord.js");
 const { client } = require("../client");
-const { Poll, PollAnswer, sequelize } = require("../database/model");
+const { Poll, sequelize } = require("../database/model");
 const { QueryTypes } = require("sequelize");
-const { startJob } = require("../utils/job");
 
 
 const buttonsType = "buttons";
@@ -33,31 +31,40 @@ module.exports = {
                 .setRequired(true)
                 .addChoices(
                     { name: "Buttons", value: buttonsType },
-                    { name: "Dropdown", value: dropdownType },
+                    { name: "Dropdown", value: dropdownType }
                 ))
-        .addStringOption(option => option
-            .setName("question")
-            .setDescription("Вопрос, который будет задан пользователям")
-            .setRequired(true))
-        .addStringOption(option => option
-            .setName("answers")
-            .setDescription("Список возможных ответов, разделенные через ;")
-            .setRequired(true))
-        .addNumberOption(option => option
-            .setName("duration")
-            .setRequired(true)
-            .setDescription("Длительность опроса в минутах")
-            .setRequired(false))
-        .addNumberOption(option => option
-            .setName("maxanswers")
-            .setDescription("Максимальное количество ответов (по-умолчанию 1)")),
+        .addStringOption(option =>
+            option
+                .setName("question")
+                .setDescription("Вопрос, который будет задан пользователям")
+                .setRequired(true))
+        .addStringOption(option =>
+            option
+                .setName("answers")
+                .setDescription("Список возможных ответов, разделенные через ;")
+                .setRequired(true))
+        .addNumberOption(option =>
+            option
+                .setName("duration")
+                .setDescription("Длительность опроса в минутах")
+                .setRequired(true))
+        .addBooleanOption(option =>
+            option
+                .setName("mention")
+                .setDescription("Нужно ли упоминать @everyone"))
+        .addBooleanOption(option =>
+            option
+                .setName("thread")
+                .setDescription("Нужно ли создавать ветку под опросом"))
+        .addNumberOption(option =>
+            option
+                .setName("maxanswers")
+                .setDescription("Максимальное количество ответов (по-умолчанию 1)")),
 
     /**  
       * @param {ChatInputCommandInteraction} interaction 
      */
     async execute(interaction) {
-        const type = interaction.options.getString("type");
-
         const negativeRepl = () => interaction.reply({
             content: "Введите от 1 до до 20 ответов, разделенными через ;",
             ephemeral: true
@@ -70,61 +77,59 @@ module.exports = {
 
         if (answers.length > 20) return negativeRepl();
 
-        const maxAnswers = interaction.options.getNumber("maxanswers") > 0 ? interaction.options.getNumber("maxanswers") : 1;
-
+        const type = interaction.options.getString("type");
+        const maxAnswers = interaction.options.getNumber("maxanswers") ?? 1;
         const question = interaction.options.getString("question");
-
         const duration = interaction.options.getNumber("duration");
+        const shouldMention = interaction.options.getBoolean("mention");
+        const shouldCreateThread = interaction.options.getBoolean("thread");
 
         const embed = new EmbedBuilder()
-            .setTitle("Опрос")
-            .addFields(
-                { name: "Вопрос", value: question },
-                { name: "Длительность", value: `${duration} минут` },
-                { name: "Максимальное количество ответов", value: `${maxAnswers}` },
-            )
-            .setFooter({ text: "Ваш ответ будет полностью анонимным." });
+            .setAuthor({ name: `Опрос от ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
+            .setDescription(question)
+            .setFooter({
+                text: `Длительность опроса - ${duration} минут. Максимальное количество ответов - ${maxAnswers}.`,
+                iconURL: client.user.displayAvatarURL()
+            });
 
-        /**
-         * @type { Message }
-         */
-        let pollMsg;
+        const components = new ActionRowBuilder();
 
         switch (type) {
             case buttonsType:
-                const buttons = answers
-                    .map((answer, i) => new ButtonBuilder()
-                        .setCustomId(`${this.pollButtonID}:${i}`)
-                        .setLabel(answer)
-                        .setStyle(ButtonStyle.Primary));
-                const row1 = new ActionRowBuilder()
-                    .addComponents(...buttons);
-                pollMsg = await client.channels.cache
-                    .get(interaction.channelId)
-                    .send({ embeds: [embed], components: [row1] });
+                const buttons = answers.map((answer, i) => new ButtonBuilder()
+                    .setCustomId(`${this.pollButtonID}:${i}`)
+                    .setLabel(answer)
+                    .setStyle(ButtonStyle.Primary));
+
+                components.addComponents(...buttons);
 
                 break;
             case dropdownType:
-                const options = answers
-                    .map((answer, i) => new StringSelectMenuOptionBuilder()
-                        .setLabel(answer)
-                        .setValue(`${i}`))
+                const options = answers.map((answer, i) => new StringSelectMenuOptionBuilder()
+                    .setLabel(answer)
+                    .setValue(`${i}`));
+
                 const select = new StringSelectMenuBuilder()
                     .setCustomId(this.pollDropdownID)
                     .addOptions(...options)
                     .setMaxValues(maxAnswers);
 
-                const row2 = new ActionRowBuilder()
-                    .addComponents(select);
-                pollMsg = await client.channels.cache
-                    .get(interaction.channelId)
-                    .send({ embeds: [embed], components: [row2] });
+                components.addComponents(select);
 
                 break;
         }
 
-        const now = new Date();
+        const pollMsg = await interaction.channel.send({
+            content: shouldMention ? "@everyone" : undefined,
+            embeds: [embed],
+            components: [components]
+        });
 
+        if (shouldCreateThread) {
+            pollMsg.startThread({ name: "Обсуждение опроса" });
+        }
+
+        const now = new Date();
         const expired_at = new Date(now.setMinutes(now.getMinutes() + duration));
 
         const pollToCreate = {
@@ -158,8 +163,6 @@ async function closeExpiredPolls() {
     for (const dto of expiredPolls) {
         const poll = dto.dataValues;
 
-        const maxAnswers = poll.max_answers;
-
         const chan = await client.channels.fetch(poll.channel_id);
 
         if (!chan) return;
@@ -191,13 +194,11 @@ async function closeExpiredPolls() {
 
         console.log("results_string: ", results);
 
-        const embed = new EmbedBuilder().setTitle("Опрос").addFields(
-            { name: "Вопрос", value: poll.question },
-            { name: "Результаты", value: results },
-        );
+        const embed = new EmbedBuilder()
+            .setTitle("Результаты опроса")
+            .setDescription(poll.question)
+            .addFields({ name: "Ответы", value: results });
 
-        await msg.delete()
-
-        await chan.send({ embeds: [embed] });
+        await msg.edit({ embeds: [embed], components: []});
     }
 }
