@@ -1,6 +1,6 @@
 "use strict";
-const { ButtonInteraction, SelectMenuInteraction, StringSelectMenuInteraction } = require("discord.js");
-const { PollAnswer, Poll, sequelize } = require("../database/model");
+const { ButtonInteraction, StringSelectMenuInteraction } = require("discord.js");
+const { PollAnswer, Poll } = require("../database/model");
 
 /**
  * @param { ButtonInteraction | StringSelectMenuInteraction } interaction 
