@@ -6,47 +6,45 @@ const {
     TextInputStyle,
     ActionRowBuilder,
     PermissionFlagsBits,
-    ChannelType
+    ChannelType,
+    ChatInputCommandInteraction
 } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("send-message")
-        .setDescription("Отправить сообщение в указанный канал")
+        .setDescription("Отправить сообщение")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
-        .addChannelOption(option => {
-            return option
+        .addChannelOption(option =>
+            option
                 .setName("channel")
                 .setDescription("Канал в который необходимо отправить сообщение")
-                .setRequired(true)
-                .addChannelTypes(ChannelType.GuildText);
-        }),
+                .addChannelTypes(ChannelType.GuildText)),
 
     /**  
      * @param {ChatInputCommandInteraction} interaction 
     */
     async execute(interaction) {
-        const channel = interaction.options.getChannel("channel");
+        const channel = interaction.options.getChannel("channel") ?? interaction.channel;
 
         const modal = new ModalBuilder()
-            .setCustomId(`${this.sendMessageModalID}:${channel.id}`)
+            .setCustomId(`${this.sendMessageModalId}:${channel.id}`)
             .setTitle("Send message");
 
-        const msgText = new TextInputBuilder()
-            .setCustomId(this.messageTextInputID)
-            .setLabel("Message text")
+        const msgJSON = new TextInputBuilder()
+            .setCustomId(this.embedJSONInputID)
+            .setLabel("Generated JSON code from eb.nadeko.bot")
             .setStyle(TextInputStyle.Paragraph)
-            .setRequired(true)
-            .setMaxLength(2000);
+            .setRequired(true);
 
         const actionRow1 = new ActionRowBuilder()
-            .addComponents(msgText);
+            .addComponents(msgJSON);
 
         modal.addComponents(actionRow1);
 
         await interaction.showModal(modal);
     },
 
-    sendMessageModalID: "sendmsg",
-    messageTextInputID: "msgtext",
+    sendMessageModalId: "sendmessage",
+    embedJSONInputID: "embedjson"
 }
