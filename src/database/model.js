@@ -1,6 +1,6 @@
 "use strict";
 const path = require("path");
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 
 const dbPath = path.join(__dirname, "../../db/db.sqlite");
 
