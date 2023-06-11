@@ -1,5 +1,5 @@
 "use strict";
-const { messageTextInputID } = require("../commands/edit-message");
+const { embedJSONInputID } = require("../commands/edit-message");
 const { client } = require("../client");
 const { ModalSubmitInteraction, TextBasedChannel } = require("discord.js");
 
@@ -7,7 +7,7 @@ const { ModalSubmitInteraction, TextBasedChannel } = require("discord.js");
  * @param {ModalSubmitInteraction} interaction
  */
 async function editMessage(interaction) {
-    const messageContent = interaction.fields.getTextInputValue(messageTextInputID);
+    const msgJSON = interaction.fields.getTextInputValue(embedJSONInputID);
     const params = interaction.customId.split(":");
     const channelId = params[1];
     const messageId = params[2];
@@ -27,10 +27,10 @@ async function editMessage(interaction) {
         return;
     }
 
-    await message.edit({ content: messageContent });
-    await interaction.reply({ content: 'Текст сообщения успешно изменен.', ephemeral: true });
+    await message.edit(JSON.parse(msgJSON));
+    await interaction.reply({ content: 'Сообщение успешно изменено.', ephemeral: true });
 }
 
 module.exports = {
-    editMessage: editMessage,
+    editMessage: editMessage
 };

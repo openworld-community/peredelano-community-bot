@@ -38,15 +38,15 @@ module.exports = {
             .setCustomId(`${this.editMessageModalID}:${channel.id}:${messageId}`)
             .setTitle("Edit message");
 
-        const msgText = new TextInputBuilder()
-            .setCustomId(this.messageTextInputID)
-            .setLabel("Message text")
+        const msgJSON = new TextInputBuilder()
+            .setCustomId(this.embedJSONInputID)
+            .setLabel("Generated JSON code from eb.nadeko.bot")
             .setStyle(TextInputStyle.Paragraph)
             .setRequired(true)
             .setMaxLength(2000);
 
         const actionRow1 = new ActionRowBuilder()
-            .addComponents(msgText);
+            .addComponents(msgJSON);
 
         modal.addComponents(actionRow1);
 
@@ -54,5 +54,5 @@ module.exports = {
     },
 
     editMessageModalID: "editmsg",
-    messageTextInputID: "msgtext",
+    embedJSONInputID: "embedjson",
 }
