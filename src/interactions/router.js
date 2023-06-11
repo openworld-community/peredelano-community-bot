@@ -1,26 +1,23 @@
 "use strict";
 const { Collection } = require("discord.js");
-const { sendMessage } = require("./send-message");
 const { editMessage } = require("./edit-message");
-const { sendEmbed } = require("./send-embed");
+const { sendMessage } = require("./send-message");
 const { rolePick } = require("./role-pick");
-const { sendMessageModalID } = require("../commands/send-message");
 const { editMessageModalID } = require("../commands/edit-message");
-const { sendEmbedModalID } = require("../commands/send-embed");
+const { sendMessageModalId } = require("../commands/send-message");
 const { rolePickerButtonID, rolePickerDropdownID } = require("../commands/create-role-picker");
 const { pollButtonID, pollDropdownID } = require("../commands/create-poll");
 const { registerPollAnswer } = require("./poll-answer");
 
 const router = new Collection();
 
-router.set(sendMessageModalID, sendMessage);
 router.set(editMessageModalID, editMessage);
-router.set(sendEmbedModalID, sendEmbed);
+router.set(sendMessageModalId, sendMessage);
 router.set(rolePickerButtonID, rolePick);
 router.set(rolePickerDropdownID, rolePick);
 router.set(pollButtonID, registerPollAnswer);
 router.set(pollDropdownID, registerPollAnswer);
 
 module.exports = {
-    router: router,
+    router: router
 };

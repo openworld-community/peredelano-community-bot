@@ -1,15 +1,15 @@
 "use strict";
-const { messageTextInputID } = require("../commands/send-message");
 const { client } = require("../client");
+const { embedJSONInputID } = require("../commands/send-message");
 
 async function sendMessage(interaction) {
     try {
-        const msgText = interaction.fields.getTextInputValue(messageTextInputID);
+        const msgJSON = interaction.fields.getTextInputValue(embedJSONInputID);
         const chanID = interaction.customId.split(":")[1];
 
         const chan = client.channels.cache.get(chanID);
         if (chan) {
-            await chan.send(msgText)
+            await chan.send(JSON.parse(msgJSON));
             await interaction.reply({
                 content: `Сообщение успешно отправлено в канал ${chan.toString()}.`,
                 ephemeral: true
@@ -22,11 +22,14 @@ async function sendMessage(interaction) {
             console.log(`Invalid channel ID: ${chanID}`);
         }
     } catch (e) {
-        console.error(`[ERROR] ${e}`);
-        await interaction.reply({ content: "There was an error while executing this command!", ephemeral: true });
+        console.log(e);
+        await interaction.reply({
+            content: `An error occurred while executing command. Please check if the JSON entered is valid`,
+            ephemeral: true
+        });
     }
 }
 
 module.exports = {
-    sendMessage: sendMessage,
+    sendMessage: sendMessage
 };
