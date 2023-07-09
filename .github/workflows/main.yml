@@ -31,6 +31,6 @@ jobs:
           script: |
             cd /root/peredelano-community-bot
             git pull origin main 
-            docker compose down
+            docker-compose down
             docker-compose up --build -d
 
