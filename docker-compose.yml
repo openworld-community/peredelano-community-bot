@@ -1,5 +1,6 @@
 version: "3.9"
-services:
+
+services: 
   app:
     user: root
     restart: always
@@ -15,6 +16,7 @@ services:
       - APP_ID=${APP_ID}
       - SERVER_ID=${SERVER_ID}
     command: [ "node", "/app/src/index.js" ]
+
   grafana:
     build:
       dockerfile: build/grafana/Dockerfile
